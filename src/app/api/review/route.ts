@@ -49,10 +49,10 @@ export async function POST(request: Request) {
                     // Duplicate found, discard the pending record
                     await db.run(`DELETE FROM books WHERE id = ?`, [book.id]);
                 } else {
-                    // Update and set active
+                    // Update and set active, including the possibility of a manually updated cover_url
                     await db.run(
-                        `UPDATE books SET title = ?, author = ?, status = 'active' WHERE id = ?`,
-                        [book.title, book.author, book.id]
+                        `UPDATE books SET title = ?, author = ?, cover_url = ?, status = 'active' WHERE id = ?`,
+                        [book.title, book.author, book.cover_url || null, book.id]
                     );
                 }
             }
